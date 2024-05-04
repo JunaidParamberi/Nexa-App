@@ -58,15 +58,22 @@ function App() {
     <Routes>
       
       <Route  path='/' element={<Layout />}>
-      
-        <Route path='*' element={<ErrorPage />} />
+
         <Route  index element= {
-        <AuthRequired>
+          <AuthRequired>
           <Home />
         </AuthRequired> } />
+
+        <Route path='movies' element={<h1>This Movies</h1>} />
+        <Route path='tv series' element={<h1>This tv series</h1>} />
+        <Route path='trending' element={<h1>This tv trending</h1>} />
+        <Route path='about' element={<h1>This About</h1>} />
+
+        
         {/* Nested routes for ContentDetails and VideoPlayer */}
         <Route path='details/:id' element={<ContentDetails />} />
         <Route path='details/:id/:title' element={<VideoPlyer />} />
+          <Route path='*' element={<ErrorPage />} />
       </Route>
       {/* Wildcard route outside of Layout */}
       <Route path='signup' element={<Signup />} />

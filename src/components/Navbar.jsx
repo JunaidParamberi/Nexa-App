@@ -86,11 +86,25 @@ export default function Navbar(){
             <ul 
             className="nav-link flex gap-5 font-[200] text-[15px] "
             >
-                <Link>Home</Link>
-                <Link>Movies</Link>
-                <Link>Series</Link>
-                <Link>Trending</Link>
-                <Link>About</Link>
+                <Link to="/">
+                    Home
+                </Link>
+
+                <Link to="movies">
+                    Movies
+                </Link>
+
+                <Link to="tv series">
+                TV Series
+                </Link>
+
+                <Link to= "trending"  >
+                Trending
+                </Link>
+
+                <Link to="about" >
+                    About
+                </Link>
             </ul>
 
            
