@@ -1,0 +1,210 @@
+
+
+*{
+    font-family: "Inter", sans-serif;
+    box-sizing: border-box;
+    color: white;
+}
+
+
+
+
+.nav-link li {
+    cursor: pointer;
+}
+
+body {
+    background-color: black;
+    min-height: 100vh;
+    width: 100%;
+}
+
+
+/* For WebKit browsers (e.g., Chrome, Safari) */
+.slider-row::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+  }
+  
+  .slider-row::-webkit-scrollbar-track {
+    background: #ffffff00; /* color of the track */
+  }
+  
+  .slider-row::-webkit-scrollbar-thumb {
+    background: #c60101; /* color of the scrollbar */
+    border-radius: 2px;
+  }
+  
+  /* For Firefox */
+  /* Note: Firefox currently does not support customizing scrollbar styles with CSS */
+  
+
+  /* Remove "x" from search input */
+input[type="search"]::-webkit-search-cancel-button {
+    display: none;
+  }
+  
+
+  .search-box {
+    display: flex;
+    border: 1px solid #ffffffb3;
+    padding: 5px;
+    gap: 2px;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    max-width: 0;
+    opacity: 0;
+}
+
+.search-box.active {
+    max-width: 350px;
+    opacity: 1;
+}
+
+.footer-links ul h3{
+  font-size: 16px;
+  font-weight: 300;
+}
+.footer-links ul a{
+  font-size: 14px;
+  font-weight: 200;
+  opacity: 0.6;
+}
+
+.footer-links ul a:hover{
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.footer-links ul{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links ul .select{
+  background-color: rgba(128, 128, 128, 0.475);
+  border: 1px solid grey;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.footer-links ul select {
+  background-color: transparent;
+  outline: none;
+  font-size: 14px;
+  font-weight: 200;
+}
+
+
+.footer-links ul .select select option {
+  /* Style the options */
+ 
+  background-color: rgba(255, 255, 255, 0.5); /* Set the background color */
+  /* Add any additional styling as needed */
+}
+
+
+
+.tc a:hover{
+  text-decoration: underline;
+  opacity: 1;
+}
+
+
+
+.MuiLinearProgress-barColorPrimary {
+  background-color: #c60101;
+}
+
+.drop-down-menu ul li {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0.8;
+}
+
+.drop-down-menu ul li:hover{
+  opacity: 1;
+  
+}
+.drop-down-menu ul li:active{
+  opacity: 0.6;
+  
+}
+
+
+.show-card-animation {
+  transition: 0.2s;
+  opacity: 0; /* Initially hide the ShowCard */
+}
+
+.show-card-animation.show {
+  opacity: 1; /* Show the ShowCard when activated */
+  
+  
+}
+
+.slider a {
+  width: 100% ;
+  height: 100% ;
+  
+}
+
+
+/* .drop-down-menu {
+  width: 12%;
+  background-color: #010101ba ;
+  display: flex;
+  position: absolute;
+  z-index: 200;
+
+  opacity: 0;
+  right: 11%;
+  padding: 12px;
+  border-radius: 10px;
+  transform: translateY(-100%);;
+  
+}
+
+ */
+
+
+
+ .dropdown-enter {
+  opacity: 0;
+  transform: translateY(-20%);
+}
+
+.dropdown-enter-active {
+  opacity: 1;
+  transform: translateY(0%);
+  transition: opacity 200ms, transform 200ms;
+}
+
+.dropdown-exit {
+  opacity: 1;
+  transform: translateY(0%);
+}
+
+.dropdown-exit-active {
+  opacity: 0;
+  transform: translateY(-20%);
+  transition: opacity 200ms, transform 200ms;
+}
+
+
+.css-176wh8e-MuiCircularProgress-circle{
+  color:  red;
+
+}
+
+
+/* .css-1idz92c-MuiCircularProgress-svg{
+  height: 100px;
+  width: 100px;
+} */
