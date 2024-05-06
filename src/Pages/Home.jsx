@@ -4,6 +4,7 @@ import Slider from '../components/Slider'
 import DropDown from '../components/DropDown'
 import { getInfo } from '../../Api'
 import { Skeleton } from '@mui/material'
+import PlyerCard from '../components/PlyerCard'
 function Home() {
 
   const [data, setData] = useState(null)
@@ -34,7 +35,7 @@ function Home() {
     <div>
                    
       <Hero/>
-    
+      {/* <PlyerCard/> */}
       {data && Object.entries(data)
       .map((item, index) => (
       <Slider key={index} item = {item}/>

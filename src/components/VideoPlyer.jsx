@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams} from 'react-router-dom'
 import { getInfo } from '../../Api'
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
@@ -15,9 +15,13 @@ import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import Spinner from './Spinner';
 import ErrorPage from '../Pages/ErrorPage';
-import { CircleLoader, MoonLoader } from 'react-spinners';
+import { CircleLoader, MoonLoader, FadeLoader, BarLoader, SkewLoader } from 'react-spinners';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseOutlinedIcon from '@mui/icons-material/PauseOutlined';
+import FilterNoneIcon from '@mui/icons-material/FilterNone';
+import { TvSlider } from './PlyerCard';
 
 
 function VideoPlyer() {
@@ -38,7 +42,54 @@ function VideoPlyer() {
     const screeRef = useRef(null)
     const [loading,setIsLoading] =useState(true)
     const [videoMetadata, setVideoMetadata] = useState(null);
+    const [epShown, setEpIsShown] = useState(false)
+
+    useEffect(() => {
+   
+        const fetchData = async () => {
+            try {
+                const info = await getInfo();
+                setData(info);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        
+        fetchData();
+    }, [params.title, params.id]); // Fetch data whenever the id or title parameter changes
     
+    const filteredMovie = data?.Movies?.find(movie => movie.id === params.id);
+    const filteredTvshows = data?.tvShows?.find(tv => tv.id === params.id)
+
+    const episodeFilter = filteredTvshows?.ep?.find(tv =>tv.episodeTitle === params.title)
+
+    const episodes = filteredTvshows?.ep
+
+
+
+
+
+
+    useEffect(() => {
+
+
+    
+        // Add event listener for loadedmetadata when the component mounts
+        if (videoRef.current) {
+            videoRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
+        }
+    
+        // Cleanup function to remove the event listener when the component unmounts
+        return () => {
+            if (videoRef.current) {
+                videoRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
+            }
+        };
+    }, [params.title, params.id]); // Empty dependency array to ensure effect runs only once on mount
+    
+    // Explicitly call handleLoadedMetadata when the video is loaded
     const handleVideoLoadMetadata = (event) => {
         // Accessing metadata of the loaded video
         const { videoWidth, videoHeight } = event.target;
@@ -46,7 +97,20 @@ function VideoPlyer() {
     
         // Set isPlaying to true if video has metadata
         setIsPlaying(true);
+    
+        // Set duration explicitly when the video is loaded
+        setDuration(videoRef.current.duration);
     };
+    
+    // Function to handle loaded metadata of the video
+    const handleLoadedMetadata = () => {
+        setDuration(videoRef.current.duration);
+    };
+    
+
+
+    
+ 
 
     useEffect(() => {
         let timeout;
@@ -57,11 +121,21 @@ function VideoPlyer() {
                 setShowControls(false);
             }, 4000); // Hide controls after 4 seconds of inactivity
         };
+
+        // const handleMouseClick = () => {
+        //     setShowControls(prevState => !prevState);
+        //     clearTimeout(timeout);
+         
+            
+       
+        // };
+
+     
         document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener("click", handleMouseMove);
+        // document.addEventListener("click", handleMouseClick);
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('click', handleMouseMove);
+            // document.removeEventListener('click', handleMouseClick);
             clearTimeout(timeout);
         };
     }, []);
@@ -110,21 +184,12 @@ function VideoPlyer() {
     
   
 
-   
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const info = await getInfo();
-                setData(info);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setIsLoading(false)
-            }
-        };
 
-        fetchData();
-    }, []); // Empty dependency array to ensure effect runs only once on mount
+   
+   
+    
+
+  
 
     useEffect(() => {
         const handleTimeUpdate = () => {
@@ -147,8 +212,8 @@ function VideoPlyer() {
     useEffect(() => {
         const handleTimeUpdate = () => {
             if (!isDragging && videoRef.current) {
-                setCurrentTime(videoRef.current.currentTime);
-                setDuration(videoRef.current.duration);
+                setCurrentTime(videoRef.current?.currentTime);
+                setDuration(videoRef.current?.duration);
                 const calculatedProgress = (videoRef.current.currentTime / videoRef.current.duration) * 100;
                 setProgress(calculatedProgress);
             }
@@ -169,8 +234,9 @@ function VideoPlyer() {
                 videoRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
             }
         };
-    }, [isDragging]);
+    }, []);
     
+
     
 
     const handleDragStart = event => {
@@ -209,7 +275,7 @@ function VideoPlyer() {
         videoRef.current.currentTime = currentTime;
     };
     
-    // Inside your JSX
+
     
 
 
@@ -247,11 +313,7 @@ function VideoPlyer() {
     
     
     // Filter the Movies array based on the id parameter
-    const filteredMovie = data?.Movies?.find(movie => movie.id === params.id);
-    const filteredTvshows = data?.tvShows?.find(tv => tv.id === params.id)
-
-    const episodeFilter = filteredTvshows?.ep?.find(tv =>tv.episodeTitle === params.title)
-
+  
     
  
     const handleFullscreenToggle = () => {
@@ -319,6 +381,9 @@ function VideoPlyer() {
     } 
     
 
+
+  
+  
    
 
   return (
@@ -331,12 +396,12 @@ function VideoPlyer() {
       {videoMetadata === null &&   
       <div className='w-full h-[100vh] absolute top-0 flex justify-center items-center z-[100] bg-black'>
             <div className='w-full h-[100vh] flex justify-center items-center ' >
-            <MoonLoader  color='red'/>
+            <FadeLoader  color='red'/>
             </div>
         </div>}
 
 
-    {params.title === stringWithoutSpaces ||  stringWithoutSpacesTv ? 
+    {params.title === stringWithoutSpaces || params.title === stringWithoutSpacesTv ? 
     <div className={`w-full h-[100vh] flex absolute top-0 z-50 bg-black ${videoMetadata === null && "hidden"} `}
         ref={screeRef}
    
@@ -345,7 +410,7 @@ function VideoPlyer() {
        { 
         showControls && 
        <div 
-       onContextMenu={handleDesable}
+    //    onContextMenu={handleDesable}
        className=" full-controll w-full h-[100vh] flex flex-col px-[20px] py-[20px] 
        bg-gradient-to-b from-black via-transparent to-black ">
             
@@ -358,19 +423,26 @@ function VideoPlyer() {
             <div className='w-full h-full flex justify-center items-center'>
 
           { isPlaying? 
-             <PlayCircleOutlineIcon sx={{width : "100px", height : "100px",cursor : "pointer"
+             <PlayArrowIcon sx={{width : "100px", height : "100px",cursor : "pointer"
              }}
              onClick={handleTogglePlay}
               />
              :
-              <PauseCircleOutlineIcon sx={{width : "100px", height : "100px", cursor : "pointer"
+              <PauseOutlinedIcon sx={{width : "100px", height : "100px", cursor : "pointer"
              }}
              onClick={handleTogglePlay}
              />}
              
              
-              </div>
-             <div className="controlls h-[20%] flex flex-col gap-[10px]">
+            </div>
+             <div className=" relative controlls h-[20%] flex flex-col gap-[10px]">
+
+                <span className={`ep-slider ${epShown ? "active" : ""}`}>
+                <TvSlider epShown = {epShown} show = {filteredTvshows} data = {episodes}/>
+
+                </span>
+          
+   
              <LinearProgress 
              variant="determinate"
              value={progress}
@@ -381,11 +453,11 @@ function VideoPlyer() {
              onMouseMove={handleDrag}
              onMouseLeave={handleDragEnd}
              onClick={handleProgressBarClick} // Add onClick event handler for clicking on the progress bar
-             sx={{height : "4px", borderRadius : "5px", cursor : "pointer", backgroundColor : "lightgrey"}} />
+             sx={{height : "5px", borderRadius : "5px", cursor : "pointer", backgroundColor : "lightgrey"}} />
 
-             <div className='timing flex w-full justify-between'>
+             <div className='timing flex w-full justify-between text-right'>
              <p>{formatTime(currentTime)}</p>
-             <p>-{formatTime(duration - currentTime)}</p>
+             <p> {formatTime(duration - currentTime)}</p>
              </div>
          
              
@@ -424,11 +496,15 @@ function VideoPlyer() {
                 }
                 </div>
 
-                <div className=' flex'>
+                <div className=' flex items-center'>
+                   { episodeFilter?.fullVideo &&
                     <div className='flex gap-3 mr-[40px]'>
-                        <SkipPreviousIcon sx={{height : "50px", width : "50px", cursor : "pointer"}} />
-                        <SkipNextIcon sx={{height : "50px", width : "50px", cursor : "pointer"}} />
-                    </div>
+                    
+                    <FilterNoneIcon 
+                        onClick = {()=> setEpIsShown(prevState => !prevState)}
+                        sx={{cursor : "pointer"}} fontSize='large' />
+
+                    </div>}
                     {!isFullScreen ? <FullscreenIcon
                       sx={{height : "50px", width : "50px", cursor : "pointer"}}
                       onClick = {handleFullscreenToggle}

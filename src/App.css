@@ -50,7 +50,7 @@ input[type="search"]::-webkit-search-cancel-button {
     border: 1px solid #ffffffb3;
     padding: 5px;
     gap: 2px;
-    border-radius: 12px;
+    border-radius: 7px;
     overflow: hidden;
     transition: all 0.3s ease;
     max-width: 0;
@@ -208,3 +208,18 @@ input[type="search"]::-webkit-search-cancel-button {
   height: 100px;
   width: 100px;
 } */
+
+/* TvSlider.css */
+
+.tv-slider {
+  opacity: 0; /* Initially hide the component */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Add fade-in and slide-in transition */
+  transform: translateX(100%); /* Initially position off-screen to the right */
+}
+
+.tv-slider.active {
+  opacity: 1; /* Make the component visible when active */
+  transform: translateX(0); /* Slide in to the current position */
+}
+
+

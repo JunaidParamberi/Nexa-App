@@ -24,7 +24,7 @@ function DropDown({txt, onClick, icon, handleSignOut, active, refr, setIsActive}
             ref={refr}
             onClick={handleClickOusite}
             className="drop-down-menu w-[15%] 
-            bg-[#010101] flex absolute z-[200] top-[90%] right-[11%] p-3 py-[20px] rounded-md">
+            bg-[#010101] flex absolute z-[-0] top-[110%] right-[11%] p-3 py-[20px] rounded-md">
                 <div>
                     <ul className="text-[15px] font-[300] text-left flex flex-col gap-3">
                         <li onClick={onClick}>
@@ -44,7 +44,7 @@ function DropDown({txt, onClick, icon, handleSignOut, active, refr, setIsActive}
                     </ul>
                     <p
                         onClick={handleSignOut}
-                        className="text-[12px] font-[200] mt-[10px] cursor-pointer flex justify-start items-center p-[5px] gap-[5px] opacity-80 hover:opacity-100 active:opacity-50 "
+                        className="  text-[16px] font-[500] mt-[10px] cursor-pointer flex justify-start items-center p-[5px] gap-[5px] opacity-80 hover:opacity-100 active:opacity-50 "
                     >
                         {" "}
                         <ExitToAppIcon fontSize="small" /> Sign Out{" "}

@@ -14,7 +14,7 @@ import { PuffLoader,
 function Spinner() {
   return (
     <div className='w-full h-full flex justify-center items-center absolute  '>
-      <FadeLoader color='white'/>
+      <PuffLoader color='white'/>
     </div>
   )
 }

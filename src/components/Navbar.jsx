@@ -17,11 +17,33 @@ export default function Navbar(){
     const [isShown, setIsShown] = useState(false)
     const [isActive, setIsActive] = useState(false)
     const currentUser = useContext(AuthContext)
+    const [isScrolled, setIsScrolled] = useState(false); // State to track scroll position
+
     
 
     const ref = useRef(null)
     const menuRef = useRef(null)
 
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Check if window has scrolled beyond certain threshold
+            if (window.scrollY > 0) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        // Add scroll event listener
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            // Clean up event listener
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+    
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (ref.current && !ref.current.contains(e.target)) {
@@ -72,14 +94,15 @@ export default function Navbar(){
 
 
     return (
-        <div className="bg-gradient-to-b fixed from-black to-transparent  top-0 z-10
-         flex w-full justify-center items-center py-[10px] ">
+        <div className={` navbar bg-gradient-to-b fixed top-0 z-10 w-full flex justify-center items-center  ${isScrolled ? 'bg-[black] active' :  ' bg-gradient-to-b from-black to-transparent'}`}
+         
+         >
          <DropDown active = {isActive} refr = {menuRef} handleSignOut={handleSignOut}/>
         <header className="flex w-[80%] justify-between items-center p-[10px] ">
-            <Link className="w-[7%] cursor-pointer" to='/'>
+            <Link className="w-[5%] cursor-pointer" to='/'>
             <img 
             
-            src={logo} alt="app_logo" />
+            src={logo}  alt="app_logo" />
             </Link>
            
 
@@ -163,10 +186,11 @@ export default function Navbar(){
             <NotificationsNoneIcon sx={{cursor : "pointer"}}/>
 
             <Avatar
+            variant="rounded"
             onClick = {(e)=> {
                 e.stopPropagation(); 
                 setIsActive (prevState => !prevState)}}
-             sx={{cursor : "pointer"}}
+             sx={{cursor : "pointer", width  : "6%", height : "auto"}}
             src={currentUser?.photoURL || ""}
                 
                 />      

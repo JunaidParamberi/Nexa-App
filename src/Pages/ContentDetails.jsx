@@ -66,10 +66,7 @@ const ContentDetails = () => {
     // const stringWithoutSpacesTv = filteredTvshows?.ep[0].episodeTitle(/:/g, '');
 
 
- 
 
-
-   
     return (
         <>
         {
