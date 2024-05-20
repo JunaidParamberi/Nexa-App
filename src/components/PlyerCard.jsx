@@ -10,8 +10,8 @@ export  function TvSlider({data, show, epShown}){
 
   // Function to scroll to the current card
   const scrollToCurrentCard = () => {
-    if (currentCardRef.current) {
-      currentCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (currentCardRef?.current) {
+      currentCardRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   };
 
@@ -24,7 +24,7 @@ export  function TvSlider({data, show, epShown}){
 
 
 
-    const text = show.title.toUpperCase()
+    const text = show?.title?.toUpperCase()
 
     return(
         <div className={` tv-slider rounded  absolute  p-[10px] w-full h-max flex flex-col bottom-36 justify-start ${epShown && "active"} `}>
@@ -34,7 +34,7 @@ export  function TvSlider({data, show, epShown}){
                 
             </div>
             {
-                data.map((ep, index) => (
+                data?.map((ep, index) => (
 
                     <PlyerCard
                     ref={index === epShown ? currentCardRef : null} 

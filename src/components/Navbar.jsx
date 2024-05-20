@@ -3,13 +3,15 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Avatar } from "@mui/material";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import logo from '../assets/NXA_LOGO.svg'
 import DropDown from "./DropDown";
 import { getAuth, signOut } from "firebase/auth"
 import { AuthContext } from "../context/AuthContext";
-
+import { Opacity } from "@mui/icons-material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 export default function Navbar(){
 
@@ -24,6 +26,12 @@ export default function Navbar(){
     const ref = useRef(null)
     const menuRef = useRef(null)
 
+    const activeStyle = {
+        fontWeight : "800",
+        opacity : "1",
+        
+
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -107,27 +115,37 @@ export default function Navbar(){
            
 
             <ul 
-            className="nav-link flex gap-5 font-[200] text-[15px] "
+            className="nav-link flex gap-5 font-[200] text-[15px] opacity-80 "
             >
-                <Link to="/">
+                <NavLink
+                 style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
+                 to="/">
                     Home
-                </Link>
+                </NavLink>
 
-                <Link to="movies">
+                <NavLink 
+              style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
+                to="movies">
                     Movies
-                </Link>
+                </NavLink>
 
-                <Link to="tv series">
+                <NavLink
+              style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
+                to="tv series">
                 TV Series
-                </Link>
+                </NavLink>
 
-                <Link to= "trending"  >
+                <NavLink
+              style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
+                to= "trending"  >
                 Trending
-                </Link>
+                </NavLink>
 
-                <Link to="about" >
+                <NavLink
+              style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
+                to="about" >
                     About
-                </Link>
+                </NavLink>
             </ul>
 
            
@@ -184,16 +202,41 @@ export default function Navbar(){
              </div>
          
             <NotificationsNoneIcon sx={{cursor : "pointer"}}/>
+            <div className="flex  items-center gap-1">
 
             <Avatar
-            variant="rounded"
-            onClick = {(e)=> {
-                e.stopPropagation(); 
-                setIsActive (prevState => !prevState)}}
-             sx={{cursor : "pointer", width  : "6%", height : "auto"}}
+          
+           
+             sx={{cursor : "pointer", }}
             src={currentUser?.photoURL || ""}
                 
-                />      
+                />    
+            <div>
+               {
+               isActive ? 
+                <KeyboardArrowUpIcon
+                sx={{
+                    cursor : "pointer"
+                }}
+                 onClick = {()=> {
+                    setIsActive (prevState => !prevState)}}
+                fontSize="small"
+                />
+               :
+               <KeyboardArrowDownIcon
+                sx={{
+                    cursor : "pointer"
+                }}
+                onClick = {(e)=> {
+                    e.stopPropagation(); 
+                    setIsActive (prevState => !prevState)}}
+                fontSize="small"
+                />
+            }
+            </div>
+
+
+            </div>
             </div>
 
            

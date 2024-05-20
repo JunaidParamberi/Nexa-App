@@ -17,6 +17,7 @@ import AuthRequired from './AuthRequired'
 import OfflinePage from './Pages/OfflinePage'
 import logoOnline from '../src/assets/NXA_LOGO.svg'
 import logoOffline from '../src/assets/NXA_LOGO_offline.svg'
+import About from './Pages/About'
 
 
 function App() {
@@ -67,7 +68,7 @@ function App() {
         <Route path='movies' element={<h1>This Movies</h1>} />
         <Route path='tv series' element={<h1>This tv series</h1>} />
         <Route path='trending' element={<h1>This tv trending</h1>} />
-        <Route path='about' element={<h1>This About</h1>} />
+        <Route path='about' element={<About/>} />
 
         
         {/* Nested routes for ContentDetails and VideoPlayer */}

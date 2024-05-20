@@ -15,6 +15,7 @@ const ContentDetails = () => {
     const [loading, setLoading] = useState(true)
     const [imageMetadata, setImageMetadata] = useState(null);
     const [logoMetaData, setLogoMetaData] = useState(null)
+    const [videoMetaData, setVideoMetadata] = useState(null)
 
 
 
@@ -66,6 +67,17 @@ const ContentDetails = () => {
     // const stringWithoutSpacesTv = filteredTvshows?.ep[0].episodeTitle(/:/g, '');
 
 
+    const handleVideoLoadMetadata = (event) => {
+        // Accessing metadata of the loaded video
+        const { videoWidth, videoHeight } = event.target;
+        setVideoMetadata({ width: videoWidth, height: videoHeight });
+    
+    
+    };
+
+
+    console.log(videoMetaData)
+
 
     return (
         <>
@@ -86,9 +98,18 @@ const ContentDetails = () => {
             
             <div>
                 <div className='w-full h-[70vh] bg-gradient-to-b from-transparent to-black min-h-[70vh] absolute z-[-1]'></div>
+            <video  
+                autoPlay  
+                onLoadedMetadata={handleVideoLoadMetadata}
+                   className={`w-full object-cover bg-cover h-[70vh] top-0 absolute z-[-2] 
+                   ${videoMetaData === null &&  "hidden"}`}
+                >
+                    <source src={filteredMovie?.trailerVideo || filteredTvshows?.trailerVideo} />
+                </video>
+                
                 <img src={filteredMovie?.coverImage || filteredTvshows?.coverImage} 
                     alt="cover-static"
-                    className={`w-full object-cover bg-cover h-[70vh] top-0 absolute z-[-2] ${imageMetadata === null &&  "hidden"}`}
+                    className={`w-full object-cover bg-cover h-[70vh] top-0 absolute z-[-2] ${imageMetadata === null || videoMetaData &&  "hidden"}`}
                     onLoad={handleImageLoad}
                 />
             </div>

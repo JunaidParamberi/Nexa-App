@@ -15,7 +15,7 @@ const formatDate = (timestamp) => {
   });
 };
 
-function TvShowCard({ data, index }) {
+function TvShowCard({ data, index,  }) {
     const [isHovering, setIsHovering] = useState(false);
     const [imageMetadata, setImageMetadata] = useState(null);
 

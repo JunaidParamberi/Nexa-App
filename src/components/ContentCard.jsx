@@ -27,7 +27,7 @@ function ContentCard({ data, loading, onMouseEnter, onMouseLeave }) {
     
 
     return (
-        <div className=' w-full h-full'>
+        <div className=' w-[230px] h-[90%]'>
         {
             imageMetadata === null &&
           
@@ -45,8 +45,6 @@ function ContentCard({ data, loading, onMouseEnter, onMouseLeave }) {
             <img 
             className={`w-full h-full object-cover bg-cover rounded-lg ${imageMetadata === null && "hidden" }`} 
             src={data.coverImage} alt=""
-            onMouseEnter = {onMouseEnter}
-            onMouseLeave = {onMouseLeave}
             onLoad={handleImageLoad}
             />
         </Link>

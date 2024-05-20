@@ -396,7 +396,7 @@ function VideoPlyer() {
       {videoMetadata === null &&   
       <div className='w-full h-[100vh] absolute top-0 flex justify-center items-center z-[100] bg-black'>
             <div className='w-full h-[100vh] flex justify-center items-center ' >
-            <FadeLoader  color='red'/>
+            <MoonLoader  color='red'/>
             </div>
         </div>}
 
@@ -412,7 +412,7 @@ function VideoPlyer() {
        <div 
     //    onContextMenu={handleDesable}
        className=" full-controll w-full h-[100vh] flex flex-col px-[20px] py-[20px] 
-       bg-gradient-to-b from-black via-transparent to-black ">
+       bg-gradient-to-b from-[#06060685] via-transparent to-[#06060685] ">
             
             <div className='w-full' >
                <Link to=".." relative='path'>

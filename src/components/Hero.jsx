@@ -115,7 +115,7 @@ function Hero() {
     
     className='hero-container 
      flex justify-center items-center 
-    w-full bg-gradient-to-b from-transparent to-black min-h-[70vh]
+    w-full bg-gradient-to-b from-transparent to-[black] min-h-[70vh]
      '
 
      onMouseEnter={handlePlay}
@@ -128,7 +128,7 @@ function Hero() {
           
             <Skeleton variant="rectangular" animation = "wave" 
             sx={{  width : "95%", height : "70vh",position : "absolute", zIndex: "-0", 
-              borderRadius : "30px", backgroundColor : "#8e8e8e24", top : "0px"  }} />
+              borderRadius : "10px", backgroundColor : "#8e8e8e24", top : "0px"  }} />
              
              
         }
@@ -169,7 +169,7 @@ function Hero() {
             sx={{  
                 minWidth : "70%", 
                 minHeight : "200px",
-                borderRadius : "40px", 
+                borderRadius : "10px", 
                 objectFit : "contain",
 
             }} 

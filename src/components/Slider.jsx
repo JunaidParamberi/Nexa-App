@@ -75,7 +75,7 @@ function Slider({item}) {
   
   return (
     <>
-    <div className=" slider w-full max-h-full flex justify-center items-center flex-col my-[30px]">
+    <div className=" slider w-full max-h-full flex justify-center items-center flex-col my-[30px] overflow-hidden">
 
       <div className="slide-header py-[10px] w-[80%] flex items-center gap-[10px]">
         <h1 className='text-[20px] mb-[5px] text-left font-[500]'>{item[0] === "tvShows" ? "Tv Shows" : item[0]}</h1>
@@ -102,7 +102,7 @@ function Slider({item}) {
      
   
               {hoveredCard &&  <div 
-                  className=' mt-[-70%] '
+                  className=' mt-[-70%] w-full overflow-hidden '
                   >
                     
                    <ShowCard 

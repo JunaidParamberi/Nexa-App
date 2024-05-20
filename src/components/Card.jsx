@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -21,6 +21,11 @@ import { ArrowCircleDownOutlined, PlayArrow } from '@mui/icons-material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone';
 import PlayCircleFilledWhiteTwoToneIcon from '@mui/icons-material/PlayCircleFilledWhiteTwoTone';
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { AuthContext } from '../context/AuthContext';
+import { db } from '../../Firebase';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -36,8 +41,32 @@ const ExpandMore = styled((props) => {
 export default function ShowCard({data, animation}) {
   const [expanded, setExpanded] = React.useState(false);
   const [isPlaying, setIsPlaying ] = React.useState(false)
+  const [videoTime, setVideoTime] = useState(false)
+  const [videoMetaData, setVideoMetadata] = useState(null)
 
   const { opacity, transition, scale } = animation;
+
+
+
+  const [userData, setUserData] = useState(null)
+
+
+  useEffect(()=> {
+    const fetchUserData = async () => {
+    const userRef = doc(db, "users", currentUser.uid);
+     const userSnap = await getDoc(userRef);
+
+  if (userSnap.exists()) {
+     setUserData(userSnap.data())
+  }
+    }
+
+    fetchUserData()
+  },[userData?.likedMovies])
+
+ 
+
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -47,50 +76,100 @@ export default function ShowCard({data, animation}) {
   const stringWithoutSpaces = data?.title?.replace(/:/g, '');
 
 
-  const StyledCard = styled(Card)(({ theme }) => ({
-    
-    maxWidth: '20%',
-    position: 'absolute',
-    opacity: '0',
-    transition: 'opacity 0.3s ease, transform 0.3s ease',
-    transform: 'scale(0.7)',
-    backgroundColor: '#323232',
-    borderRadius: '15px', // Set the border radius here
-    '&:hover': {
-      opacity: '1',
-      transform: 'scale(1)',
-   
-    },
-  }));
+  const currentUser = useContext(AuthContext)
+
+  //update liked items array
   
- 
+  async function handleLiked() {
+    try {
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            const currentLikedMovies = userData.likedMovies || [];
+            
+            // Check if the data movie is already liked
+            const isAlreadyLiked = currentLikedMovies.some(movie => movie.id === data.id);
+            
+            // If the data movie is not already liked, add it to the list
+            if (!isAlreadyLiked) {
+                const updatedLikedMovies = [...currentLikedMovies, data];
+                
+                await updateDoc(userDocRef, {
+                    likedMovies: updatedLikedMovies
+                });
+
+                console.log("Liked movie added successfully.");
+            } else {
+                console.log("Movie is already liked.");
+            }
+        } else {
+            console.log("User document does not exist.");
+        }
+    } catch (error) {
+        console.error("Error updating liked movies:", error);
+    }
+}
+
+
+
+
+  useEffect(()=> {
+    setTimeout(()=> {
+      setVideoTime(true)
+    }, 2000)
+  },[])
+
+
+  const handleVideoLoadMetadata = (event) => {
+    // Accessing metadata of the loaded video
+    const { videoWidth, videoHeight } = event.target;
+    setVideoMetadata({ width: videoWidth, height: videoHeight });
+
+
+};
+
+// console.log(userData?.likedMovies)
+
+const isLiked = userData?.likedMovies.find( item => (item.id === data.id))
+
+
+
 
   return (
-    <StyledCard>
+    <Card sx={{ maxWidth: "23%" , position : "absolute", 
+    backgroundColor : "#323232", opacity, transition, scale }}>
         
+        <div className='min-w-full min-h-full'>
+  {videoTime ? (
     <div>
-
-      
-
-        <CardMedia
-        component="img"
-        height="100"
-        image= {data?.coverImage}
-    
-        
-      />
-
-        
-      
-
+   { 
+   
+    <video autoPlay width="100%" height="100%"
+    onLoadedMetadata={handleVideoLoadMetadata}
+    >
+      <source src={data.trailerVideo} type='video/mp4' />
+    </video>
+}
     </div>
+  ) : (
+    <CardMedia
+      component="img"
+      height="100%"
+      width="100%"
+      image={data?.coverImage}
+    />
+  )}
+</div>
+
 
 
 
 
       <CardHeader
        
-        title={data?.title}
+        title={data.title}
         titleTypographyProps={{
             style: {
                 color: 'white',
@@ -108,7 +187,27 @@ export default function ShowCard({data, animation}) {
     
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+          <div
+
+          >
+
+            {
+              isLiked?.id === data?.id ? (
+                <div className=' flex items-center justify-center gap-2 '>
+                  <ThumbUpAltIcon   onClick = {handleLiked}  /> 
+                  <p
+                  className=' text-[15px]'
+                  >Liked</p>
+
+                </div>
+
+              ) : (
+                
+                <ThumbUpOffAltIcon/>
+              )
+            }
+
+          </div>
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
@@ -119,10 +218,10 @@ export default function ShowCard({data, animation}) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-
+          <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
-   
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent 
 
             sx={{
@@ -133,7 +232,7 @@ export default function ShowCard({data, animation}) {
         >
         <Link
         className='flex items-center gap-2'
-        to={`/details/${data?.id}/${stringWithoutSpaces}`} >
+        to={`/details/${data.id}/${stringWithoutSpaces}`} >
             
 
                 <PlayCircleFilledWhiteTwoToneIcon />
@@ -153,7 +252,7 @@ export default function ShowCard({data, animation}) {
 
          
         </CardContent>
-
-    </StyledCard>
+      </Collapse>
+    </Card>
   );
 }
