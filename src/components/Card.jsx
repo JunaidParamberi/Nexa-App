@@ -81,6 +81,9 @@ export default function ShowCard({data, animation}) {
   //update liked items array
   
   async function handleLiked() {
+
+
+
     try {
         const userDocRef = doc(db, "users", currentUser.uid);
         const userDocSnap = await getDoc(userDocRef);
@@ -193,8 +196,8 @@ const isLiked = userData?.likedMovies.find( item => (item.id === data.id))
 
             {
               isLiked?.id === data?.id ? (
-                <div className=' flex items-center justify-center gap-2 '>
-                  <ThumbUpAltIcon   onClick = {handleLiked}  /> 
+                <div   className=' flex items-center justify-center gap-2 '>
+                  <ThumbUpAltIcon   /> 
                   <p
                   className=' text-[15px]'
                   >Liked</p>
@@ -203,7 +206,7 @@ const isLiked = userData?.likedMovies.find( item => (item.id === data.id))
 
               ) : (
                 
-                <ThumbUpOffAltIcon/>
+                <ThumbUpOffAltIcon onClick = {handleLiked} />
               )
             }
 

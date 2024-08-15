@@ -93,7 +93,7 @@ function Login() {
             <div className="buttons flex items-center gap-3">
                 <p
                 className='text-[14px] font-[300]'
-                >Already have an Account ?</p>
+                >Don't have an Account ?</p>
                 <Link to="/signup">
                 <button 
                 className='bg-[#ff0000] px-[15px] py-[7px] rounded-lg font-[500] text-[16px] hover:bg-[#ff0000c4] active:bg-[#ff000053]'
