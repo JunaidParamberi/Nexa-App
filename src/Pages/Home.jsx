@@ -10,6 +10,7 @@ import { AuthContext } from '../context/AuthContext'
 import { db } from '../../Firebase'
 import { getDoc, doc } from 'firebase/firestore'
 import MyPicks from '../components/MyPicks'
+import ErrorPage from '../Pages/ErrorPage'
 function Home() {
 
   const [data, setData] = useState(null)
@@ -19,6 +20,7 @@ function Home() {
 
   const currentUser = useContext(AuthContext)
 
+  var erMsg
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,7 @@ function Home() {
         } catch (error) {
             console.error('Error fetching data:', error);
             setEr(true);
+            erMsg = error.messgae
         } finally {
             setLoading(false); // Set loading state back to false when data fetching completes
         }
@@ -51,6 +54,13 @@ if (userSnap.exists()) {
 },[userData])
 
 
+console.log(erMsg)
+
+if(er){
+  return (
+    <ErrorPage message={erMsg}/>
+  )
+}
 
 
 
