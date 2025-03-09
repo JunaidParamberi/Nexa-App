@@ -23,7 +23,7 @@ function DropDown({txt, onClick, icon, handleSignOut, active, refr, setIsActive}
             <div 
             ref={refr}
             onClick={handleClickOusite}
-            className="drop-down-menu w-[15%] 
+            className="drop-down-menu w-[15%] max-md:w-[50%] 
             bg-[#010101] flex absolute z-[-0] top-[110%] right-[11%] p-3 py-[20px] rounded-md shadow-xl ">
                 <div>
                     <ul className="text-[15px] font-[300] text-left flex flex-col gap-3">

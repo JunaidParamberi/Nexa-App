@@ -113,10 +113,7 @@ function Hero() {
   return (
     <div
     
-    className='hero-container 
-     flex justify-center items-center 
-    w-full bg-gradient-to-b from-transparent to-[black] min-h-[70vh]
-     '
+    className='hero-container flex flex-col items-center w-screen bg-gradient-to-b from-transparent to-[black] min-h-[70vh]'
 
      onMouseEnter={handlePlay}
      onMouseLeave={()=> setIsPlaying(false)}
@@ -253,7 +250,7 @@ function Hero() {
             <h2>{currentItem?.duration}</h2>
             </div>
             
-            <p className=' max-w-[50%] text-center font-[100] text-[16px]'>
+            <p className=' max-w-[50% max-md:w-[90%] text-center font-[100] text-[16px]'>
               {currentItem?.description}
             </p>
 

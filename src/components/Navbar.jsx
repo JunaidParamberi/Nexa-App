@@ -5,242 +5,144 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link, NavLink } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
-import logo from '../assets/NXA_LOGO.svg'
+import MenuIcon from '@mui/icons-material/Menu';
+import logo from '../assets/NXA_LOGO.svg';
 import DropDown from "./DropDown";
-import { getAuth, signOut } from "firebase/auth"
+import { getAuth, signOut } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
-import { Opacity } from "@mui/icons-material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-export default function Navbar(){
-
-
-    const [isShown, setIsShown] = useState(false)
-    const [isActive, setIsActive] = useState(false)
-    const currentUser = useContext(AuthContext)
-    const [isScrolled, setIsScrolled] = useState(false); // State to track scroll position
-
+export default function Navbar() {
+    const [isShown, setIsShown] = useState(false);
+    const [isActive, setIsActive] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const currentUser = useContext(AuthContext);
     
-
-    const ref = useRef(null)
-    const menuRef = useRef(null)
-
-    const activeStyle = {
-        fontWeight : "800",
-        opacity : "1",
-        
-
-    }
+    const ref = useRef(null);
+    const menuRef = useRef(null);
+    const mobileMenuRef = useRef(null);
 
     useEffect(() => {
         const handleScroll = () => {
-            // Check if window has scrolled beyond certain threshold
-            if (window.scrollY > 0) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
+            setIsScrolled(window.scrollY > 0);
         };
 
-        // Add scroll event listener
         window.addEventListener("scroll", handleScroll);
-
-        return () => {
-            // Clean up event listener
-            window.removeEventListener("scroll", handleScroll);
-        };
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-    
+
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (ref.current && !ref.current.contains(e.target)) {
                 setIsShown(false);
-               
+            }
+            if (menuRef.current && !menuRef.current.contains(e.target)) {
+                setIsActive(false);
+            }
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+                setIsMobileMenuOpen(false);
             }
         };
-    
+        
         document.addEventListener("click", handleClickOutside);
-    
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [ref]);
-    
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                setIsActive(false); // Close dropdown when clicking outside
-            }
-        };
-    
-        document.addEventListener("click", handleClickOutside);
-    
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [menuRef]);
-    
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
 
-  
-    const handleKeyPress = (event) => {
-        if (event.key === 'Escape') {
-            setIsShown(false);
-        }
+    const handleSignOut = () => {
+        const auth = getAuth();
+        signOut(auth).catch(error => console.error(error));
     };
 
-    const handleSignOut = ()=>{
-        const auth = getAuth();
-        signOut(auth).then(() => {
-        // Sign-out successful.
-        }).catch((error) => {
-        // An error happened.
-        });
-    }
-   
-
-
-
     return (
-        <div className={` navbar bg-gradient-to-b fixed top-0 z-10 w-full flex justify-center items-center  ${isScrolled ? 'bg-[black] active' :  ' bg-gradient-to-b from-black to-transparent'}`}
-         
-         >
-         <DropDown active = {isActive} refr = {menuRef} handleSignOut={handleSignOut}/>
-        <header className="flex w-[80%] justify-between items-center p-[10px] ">
-            <Link className="w-[5%] cursor-pointer" to='/'>
-            <img 
+        <div className={`navbar fixed top-0 z-10 w-full flex justify-center items-center ${isScrolled ? 'bg-black' : 'bg-gradient-to-b from-black to-transparent'}`}>
+            <DropDown active={isActive} refr={menuRef} handleSignOut={handleSignOut} />
             
-            src={logo}  alt="app_logo" />
-            </Link>
-           
-
-            <ul 
-            className="nav-link flex gap-5 font-[200] text-[15px] opacity-80 "
-            >
-                <NavLink
-                 style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
-                 to="/">
-                    Home
-                </NavLink>
-
-                <NavLink 
-              style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
-                to="movies">
-                    Movies
-                </NavLink>
-
-                <NavLink
-              style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
-                to="tv series">
-                TV Series
-                </NavLink>
-
-                <NavLink
-              style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
-                to= "trending"  >
-                Trending
-                </NavLink>
-
-                <NavLink
-              style={({ isActive }) => (isActive ? {fontWeight : "600", color : "#CF1F3B",  opacity : "1"} : null)}
-                to="about" >
-                    About
-                </NavLink>
-            </ul>
-
-           
-
-            <div className="flex justify-center gap-5 items-center">
-
-            <div  className=" mr-[30px] search flex gap-2 w-[350px] justify-end items-center">
+            <header className="flex w-[90%] justify-between items-center p-[10px]">
+                <Link className="w-[6%] max-md:w-[15%] cursor-pointer" to='/'>
+                    <img src={logo} alt="app_logo" className="w-full" />
+                </Link>
                 
+                <nav className="hidden md:flex gap-5 font-light text-sm opacity-80">
+                {['/', '/movies', '/tv-series', '/trending', '/about'].map((path, index) => (
+    <NavLink 
+        key={index} 
+        to={path} 
+        className={({ isActive }) => isActive ? "font-semibold text-red-600 opacity-100" : "opacity-80"}
+    >
+        {path.substring(1).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Home'}
+    </NavLink>
+))}
 
+                </nav>
                 
-                <div ref={ref} 
-                
-                // className={` flex border-[1px] 
-                // border-[#ffffff56] py-[5px] px-[10px] gap-2 rounded-[12px] `}
-
-                className={`search-box ${isShown ? 'active' : ''}`}
-                 
-                >    
-                     <SearchIcon/>
-                     <input 
-                     onKeyDown={handleKeyPress}
-                     type="search" 
-                     placeholder="Search Movies, Series..." 
-                     className=" bg-transparent outline-none pl-[3px] font-[200] text-[15px]
-                     w-[250px]"
-                     />
-                 </div>
-                 
-                  <div>
-
-
-             {isShown === false ?  
-                <SearchIcon 
-                
-                onClick={(e) => {
-                    e.stopPropagation(); 
-                    setIsShown(true);
-                }}
-                sx={{ cursor: "pointer" }}
- 
-                /> 
-                :
-                <CloseIcon
-                    onClick={() => setIsShown(false)}
-                    sx={{ cursor: "pointer" }}
+                <div className="flex gap-5 items-center">
+                    <div className="hidden md:flex items-center gap-2 border border-gray-600 py-1 px-2 rounded-lg" ref={ref}>
+                        <SearchIcon />
+                        <input type="search" placeholder="Search..." className="bg-transparent outline-none w-40 text-sm" />
+                    </div>
                     
-                />
-            }
-             </div>
- 
+                    <div className="md:hidden">
+                        {isShown ? 
+                            <CloseIcon onClick={() => setIsShown(false)} sx={{ cursor: "pointer" }} /> :
+                            <SearchIcon onClick={(e) => { e.stopPropagation(); setIsShown(true); }} sx={{ cursor: "pointer" }} />
+                        }
+                    </div>
+                    
+                    <NotificationsNoneIcon sx={{ cursor: "pointer" }} />
+                    
+                    <div className="flex items-center gap-1">
+                        <Avatar sx={{ cursor: "pointer" }} src={currentUser?.photoURL || ""} />
+                        {isActive ? 
+                            <KeyboardArrowUpIcon sx={{ cursor: "pointer" }} onClick={() => setIsActive(!isActive)} fontSize="small" /> :
+                            <KeyboardArrowDownIcon sx={{ cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); setIsActive(!isActive); }} fontSize="small" />
+                        }
+                    </div>
+                    
+                    <div className="md:hidden">
+                        {isMobileMenuOpen ? 
+                            <CloseIcon onClick={() => setIsMobileMenuOpen(false)} sx={{ cursor: "pointer" }} /> :
+                            <MenuIcon onClick={(e) => { e.stopPropagation(); setIsMobileMenuOpen(true); }} sx={{ cursor: "pointer" }} />
+                        }
+                    </div>
+                </div>
+            </header>
             
- 
-                 
-             </div>
-         
-            <NotificationsNoneIcon sx={{cursor : "pointer"}}/>
-            <div className="flex  items-center gap-1">
+            {isShown && (
+                <div className="absolute top-[60px] left-0 w-full bg-black p-3 md:hidden flex items-center gap-2 border border-gray-600 rounded-lg" ref={ref}>
+                    <SearchIcon />
+                    <input type="search" placeholder="Search..." className="bg-transparent outline-none w-full text-sm" />
+                </div>
+            )}
+            
+            {isMobileMenuOpen && (
+                <nav ref={mobileMenuRef} className="absolute top-[60px] left-0 w-full bg-black p-5 flex flex-col gap-3 text-center md:hidden">
+                    {['/', '/movies', '/tv-series', '/trending', '/about'].map((path, index) => (
+<NavLink 
+key={index} 
+to={path} 
+className={({ isActive }) => isActive ? "font-semibold text-red-600 opacity-100" : "opacity-80"}
+>
+{path.substring(1).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Home'}
+</NavLink>
+))}
 
-            <Avatar
-          
-           
-             sx={{cursor : "pointer", }}
-            src={currentUser?.photoURL || ""}
-                
-                />    
-            <div>
-               {
-               isActive ? 
-                <KeyboardArrowUpIcon
-                sx={{
-                    cursor : "pointer"
-                }}
-                 onClick = {()=> {
-                    setIsActive (prevState => !prevState)}}
-                fontSize="small"
-                />
-               :
-               <KeyboardArrowDownIcon
-                sx={{
-                    cursor : "pointer"
-                }}
-                onClick = {(e)=> {
-                    e.stopPropagation(); 
-                    setIsActive (prevState => !prevState)}}
-                fontSize="small"
-                />
-            }
-            </div>
-
-
-            </div>
-            </div>
-
-           
-        </header>
+                </nav>
+            )}
         </div>
-    )
+    );
 }
+
+<nav className="hidden md:flex gap-5 font-light text-sm opacity-80">
+{['/', '/movies', '/tv-series', '/trending', '/about'].map((path, index) => (
+<NavLink 
+key={index} 
+to={path} 
+className={({ isActive }) => isActive ? "font-semibold text-red-600 opacity-100" : "opacity-80"}
+>
+{path.substring(1).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Home'}
+</NavLink>
+))}
+
+</nav>

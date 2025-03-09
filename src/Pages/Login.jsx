@@ -109,7 +109,7 @@ function Login() {
         <div className="inputs  w-full h-full flex flex-col justify-center items-center">
 
             <form
-            className='w-[30%] flex flex-col justify-center items-center gap-5 bg-[#00000090] p-[50px] rounded-xl'
+            className='w-[30%] max-md:w-[90%] flex flex-col justify-center items-center gap-5 bg-[#00000090] p-[50px] rounded-xl'
             action="">
                 <h1
                 className=' text-[25px] font-[500]'

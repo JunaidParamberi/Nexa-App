@@ -56,6 +56,8 @@ function App() {
   }
 
   return (
+    <div className='w-screen'>
+
     <Routes>
       
       <Route  path='/' element={<Layout />}>
@@ -80,6 +82,7 @@ function App() {
       <Route path='signup' element={<Signup />} />
       <Route path='login' element={<Login />} />
     </Routes>
+            </div>
   );
 }
 

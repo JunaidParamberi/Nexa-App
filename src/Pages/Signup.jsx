@@ -181,7 +181,7 @@ function Signup() {
 
               
             <form
-            className='w-[30%] flex flex-col justify-start items-start gap-5 bg-[#00000090] p-[50px] rounded-xl'
+            className='w-[30%] max-md:w-[90%] flex flex-col justify-start items-start gap-5 bg-[#00000090] p-[50px] rounded-xl'
             action="">
                 <h1
                 className=' text-[25px] font-[500]'

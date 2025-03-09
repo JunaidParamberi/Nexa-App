@@ -66,7 +66,7 @@ if(er){
 
 
   return (
-    <div>
+    <div className=' w-full'>
                    
       <Hero/>
       <MyPicks/>
